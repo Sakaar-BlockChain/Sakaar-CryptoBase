@@ -12,8 +12,3 @@
 	path = lib/Sakaar-HashCode
 	url = https://github.com/Sakaar-BlockChain/Sakaar-HashCode
 	branch = main
-
-[submodule "lib/Sakaar-Ecc"]
-	path = lib/Sakaar-Ecc
-	url = https://github.com/Sakaar-BlockChain/Sakaar-Ecc
-	branch = main
