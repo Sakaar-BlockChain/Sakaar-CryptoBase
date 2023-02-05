@@ -8,8 +8,8 @@ void secp256k1_encode(const struct string_st *public, const struct string_st *pr
     struct string_st *hash = string_new();
 
     ecc_curve_secp256k1(curve);
-    ecc_key_set_tlv(public_key, public, curve);
-    ecc_key_set_tlv(private_key, private, curve);
+    ecc_key_set_str(public_key, public, curve);
+    ecc_key_set_str(private_key, private, curve);
 
     ecc_key_get_key(public_key, private_key, curve, hash);
     get_hash_code(hash_type)._code(hash, hash);
@@ -27,8 +27,8 @@ void secp256k1_decode(const struct string_st *public, const struct string_st *pr
     struct string_st *hash = string_new();
 
     ecc_curve_secp256k1(curve);
-    ecc_key_set_tlv(public_key, public, curve);
-    ecc_key_set_tlv(private_key, private, curve);
+    ecc_key_set_str(public_key, public, curve);
+    ecc_key_set_str(private_key, private, curve);
 
     ecc_key_get_key(public_key, private_key, curve, hash);
     get_hash_code(hash_type)._code(hash, hash);
@@ -45,7 +45,7 @@ void secp256k1_encode_self(const struct string_st *private, const struct string_
     struct string_st *hash = string_new();
 
     ecc_curve_secp256k1(curve);
-    ecc_key_set_tlv(key, private, curve);
+    ecc_key_set_str(key, private, curve);
 
     ecc_key_get_key_self(key, curve, hash);
     get_hash_code(hash_type)._code(hash, hash);
@@ -61,7 +61,7 @@ void secp256k1_decode_self(const struct string_st *private, const struct string_
     struct string_st *hash = string_new();
 
     ecc_curve_secp256k1(curve);
-    ecc_key_set_tlv(key, private, curve);
+    ecc_key_set_str(key, private, curve);
 
     ecc_key_get_key_self(key, curve, hash);
     get_hash_code(hash_type)._code(hash, hash);
@@ -78,7 +78,7 @@ void secp256k1_get_public(const struct string_st *private, struct string_st *pub
     struct ecc_key *key = ecc_key_new();
 
     ecc_curve_secp256k1(curve);
-    ecc_key_set_tlv(key, private, curve);
+    ecc_key_set_str(key, private, curve);
 
     ecc_key_get_address(key, public);
 
@@ -92,7 +92,7 @@ void secp256k1_from_string(struct string_st *private, const struct string_st *st
     ecc_curve_secp256k1(curve);
     ecc_key_generate(key, str, curve);
 
-    ecc_key_get_tlv(key, private);
+    ecc_key_get_str(key, private);
 
     ecc_key_free(key);
     ecc_curve_free(curve);
@@ -104,7 +104,7 @@ void secp256k1_generate(struct string_st *private) {
     ecc_curve_secp256k1(curve);
     ecc_key_generate_f(key, curve);
 
-    ecc_key_get_tlv(key, private);
+    ecc_key_get_str(key, private);
 
     ecc_key_free(key);
     ecc_curve_free(curve);
@@ -117,10 +117,10 @@ void secp256k1_create_sign(struct string_st *sign, const struct string_st *priva
     struct ecc_key *key = ecc_key_new();
 
     ecc_curve_secp256k1(curve);
-    ecc_key_set_tlv(key, private, curve);
+    ecc_key_set_str(key, private, curve);
     ecc_sign_create(signature, key, hash, curve);
 
-    ecc_sign_get_tlv(signature, sign);
+    ecc_sign_get_str(signature, sign);
 
     ecc_key_free(key);
     ecc_sign_free(signature);
@@ -132,8 +132,8 @@ int secp256k1_check_sign(const struct string_st *sign, const struct string_st *p
     struct ecc_key *key = ecc_key_new();
 
     ecc_curve_secp256k1(curve);
-    ecc_key_set_tlv(key, public, curve);
-    ecc_sign_set_tlv(signature, sign);
+    ecc_key_set_str(key, public, curve);
+    ecc_sign_set_str(signature, sign);
 
     int res = ecc_sign_check(signature, key, hash, curve);
 

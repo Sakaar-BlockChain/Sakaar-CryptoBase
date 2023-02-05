@@ -1,22 +1,22 @@
-#ifndef ECC_H
-#define ECC_H
+#ifndef ECC_CURVE_H
+#define ECC_CURVE_H
 
 #include "struct.h"
+#include "ecc_point.h"
 
-#include "ecc/ecc_point.h"
-#include "ecc/ecc_curve.h"
-#include "ecc/ecc_sign.h"
-#include "ecc/ecc_key.h"
+struct ecc_curve {
+    struct ecc_point *g;
+    struct integer_st *h;
+    struct integer_st *a;
+    struct integer_st *b;
+    struct integer_st *n;
+    struct integer_st *p;
+};
+
+struct ecc_curve *ecc_curve_new();
+void ecc_curve_free(struct ecc_curve *);
+
+void ecc_curve_secp256k1(struct ecc_curve *);
 
 
-#define ECC_POINT_TLV   0xC2
-#define ECC_SIGN_TLV    0xF4
-#define ECC_KEY_TLV     0xC4
-
-
-#define ECC_POINT_SIZE  sizeof(struct ecc_point)
-#define ECC_CURVE_SIZE  sizeof(struct ecc_curve)
-#define ECC_SIGN_SIZE   sizeof(struct ecc_sign)
-#define ECC_KEY_SIZE    sizeof(struct ecc_key)
-
-#endif //ECC_H
+#endif //ECC_CURVE_H
