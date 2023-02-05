@@ -21,12 +21,6 @@ if(NOT TARGET Sakaar_HashCode_lib)
     MESSAGE(STATUS "Connected: Sakaar_HashCode_lib")
 endif()
 
-if(NOT TARGET Sakaar_Ecc_lib)
-    add_subdirectory(lib/Sakaar-Ecc)
-    link_directories(lib/Sakaar-Ecc)
-    MESSAGE(STATUS "Connected: Sakaar_Ecc_lib")
-endif()
-
 FILE(GLOB SOURCE_FILES_DIR_DIR "src/*/*/*.c")
 FILE(GLOB SOURCE_FILES_DIR "src/*/*.c")
 FILE(GLOB SOURCE_FILES "src/*.c")
@@ -41,7 +35,5 @@ target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_Struct_lib)
 target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_CryptoCode_lib)
 target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_HashCode_lib)
 
-target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_Ecc_lib)
-
-add_executable(${PROJECT_NAME} main.c)
+add_executable(${PROJECT_NAME} main.c include/ecc.h include/ecc/ecc_curve.h include/ecc/ecc_key.h include/ecc/ecc_point.h include/ecc/ecc_sign.h src/ecc/ecc_key.c src/ecc/ecc_curve.c src/ecc/ecc_point.c src/ecc/ecc_sign.c)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_lib)
