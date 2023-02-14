@@ -16,7 +16,21 @@ struct ecc_curve {
 struct ecc_curve *ecc_curve_new();
 void ecc_curve_free(struct ecc_curve *);
 
+void ecc_curve_secp112r1(struct ecc_curve *);
+void ecc_curve_secp112r2(struct ecc_curve *);
+void ecc_curve_secp128r1(struct ecc_curve *);
+void ecc_curve_secp128r2(struct ecc_curve *);
+void ecc_curve_secp160k1(struct ecc_curve *);
+void ecc_curve_secp160r1(struct ecc_curve *);
+void ecc_curve_secp160r2(struct ecc_curve *);
+void ecc_curve_secp192k1(struct ecc_curve *);
+void ecc_curve_secp192r1(struct ecc_curve *);
+void ecc_curve_secp224k1(struct ecc_curve *);
+void ecc_curve_secp224r1(struct ecc_curve *);
 void ecc_curve_secp256k1(struct ecc_curve *);
+void ecc_curve_secp256r1(struct ecc_curve *);
+void ecc_curve_secp384r1(struct ecc_curve *);
+void ecc_curve_secp521r1(struct ecc_curve *);
 
 
 #endif //ECC_CURVE_H

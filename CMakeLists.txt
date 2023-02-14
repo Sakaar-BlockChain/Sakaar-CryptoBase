@@ -35,5 +35,5 @@ target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_Struct_lib)
 target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_CryptoCode_lib)
 target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_HashCode_lib)
 
-add_executable(${PROJECT_NAME} main.c include/ecc.h include/ecc/ecc_curve.h include/ecc/ecc_key.h include/ecc/ecc_point.h include/ecc/ecc_sign.h src/ecc/ecc_key.c src/ecc/ecc_curve.c src/ecc/ecc_point.c src/ecc/ecc_sign.c)
+add_executable(${PROJECT_NAME} main.c)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_lib)
