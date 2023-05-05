@@ -32,17 +32,17 @@
 #define BASE_SECP521R1  (0x000b | BASE_SECP_R)
 
 struct crypto_base{
-    void (*_encode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
-    void (*_decode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
-    void (*_encode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
-    void (*_decode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int (*_encode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int (*_decode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int (*_encode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int (*_decode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
 
-    void (*_get_public)(const struct string_st *private, struct string_st *public);
+    int (*_get_public)(const struct string_st *private, struct string_st *public);
     void (*_from_string)(struct string_st *private, const struct string_st *str);
     void (*_generate)(struct string_st *private);
 
 
-    void (*_create_sign)(struct string_st *sign, const struct string_st *private, const struct string_st *hash);
+    int (*_create_sign)(struct string_st *sign, const struct string_st *private, const struct string_st *hash);
     int (*_check_sign)(const struct string_st *sign, const struct string_st *public, const struct string_st *hash);
 };
 

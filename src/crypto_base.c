@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "crypto_base.h"
 
 struct crypto_base get_crypto_base(unsigned code) {
@@ -39,5 +40,6 @@ struct crypto_base get_crypto_base(unsigned code) {
             }
         }
     }
+    fprintf(stderr, "Not recognized Crypto Base : %d\n", code);
     exit(0);
 }

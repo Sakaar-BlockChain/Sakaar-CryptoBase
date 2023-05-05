@@ -5,39 +5,45 @@
 struct ecc_key *ecc_key_new() {
     struct ecc_key *res = skr_malloc(ECC_KEY_SIZE);
     res->p = ecc_point_new();
-    res->d = integer_new();
+    integer_data_init(&res->d);
     res->priv = 0;
     return res;
 }
 void ecc_key_clear(struct ecc_key *res) {
+    if (res == NULL) return;
     ecc_point_clear(res->p);
-    integer_clear(res->d);
+    integer_clear(&res->d);
     res->priv = 0;
 }
 void ecc_key_free(struct ecc_key *res) {
+    if (res == NULL) return;
     ecc_point_free(res->p);
-    integer_free(res->d);
+    integer_data_free(&res->d);
     skr_free(res);
 }
 
-void ecc_key_set_str(struct ecc_key *res, const struct string_st *str, const struct ecc_curve *curve) {
-    if (res == NULL) return;
-    if (string_is_null(str) || curve == NULL) return ecc_key_clear(res);
-    unsigned _tag = tlv_get_tag(str->data);
+int ecc_key_set_str(struct ecc_key *res, const struct string_st *str, const struct ecc_curve *curve) {
+    if (res == NULL) return 0;
+    ecc_key_clear(res);
+    if (string_is_null(str) || curve == NULL) return 0;
+    unsigned _tag = tlv_get_tag(str);
+
+    int result;
     if (_tag == ECC_KEY_TLV) {
         res->priv = 1;
-        _integer_set_tlv(res->d, str);
-        ecc_point_mul(res->p, curve->g, res->d, curve);
+        if((result = integer_set_tlv_(&res->d, str)) != 0) return result;
+        ecc_point_mul(res->p, curve->g, &res->d, curve);
     } else if (_tag == ECC_POINT_TLV || _tag == ECC_POINT_TLV + 1) {
         res->priv = 0;
-        ecc_point_set_str(res->p, str, curve);
+        if((result = ecc_point_set_str(res->p, str, curve)) != 0) return result;
     }
+    return 0;
 }
 void ecc_key_get_str(const struct ecc_key *res, struct string_st *str) {
     if (str == NULL) return;
     if (res == NULL) return string_clear(str);
     if (!res->priv) return ecc_point_get_str(res->p, str);
-    _integer_get_tlv(res->d, str, ECC_KEY_TLV);
+    integer_get_tlv_(&res->d, str, ECC_KEY_TLV);
 }
 void ecc_key_get_address(const struct ecc_key *res, struct string_st *tlv) {
     if (res == NULL || tlv == NULL) return;
@@ -49,7 +55,7 @@ void ecc_key_get_key_self(const struct ecc_key *key, const struct ecc_curve *cur
     if (curve == NULL || key == NULL || !key->priv) return string_free(res);
     struct ecc_point *point = ecc_point_new();
 
-    ecc_point_mul(point, key->p, key->d, curve);
+    ecc_point_mul(point, key->p, &key->d, curve);
     ecc_point_get_str(point, res);
 
     ecc_point_free(point);
@@ -59,7 +65,7 @@ void ecc_key_get_key(const struct ecc_key *key1, const struct ecc_key *key2, con
     if (curve == NULL || key1 == NULL || key2 == NULL || !key2->priv) return string_free(res);
     struct ecc_point *point = ecc_point_new();
 
-    ecc_point_mul(point, key1->p, key2->d, curve);
+    ecc_point_mul(point, key1->p, &key2->d, curve);
     ecc_point_get_str(point, res);
 
     ecc_point_free(point);
@@ -85,7 +91,7 @@ void ecc_key_generate(struct ecc_key *res, const struct string_st *str, const st
         sha256_code._code(master_key, master_key);
     }
     {
-        integer_get_str(curve->n, priv_key);
+        integer_get_str(&curve->n, priv_key);
         size_t pos;
 
         do {
@@ -102,12 +108,12 @@ void ecc_key_generate(struct ecc_key *res, const struct string_st *str, const st
                     for (unsigned j = 0; j < y->size && pos < priv_key->size; j++, pos++)
                         priv_key->data[pos] = y->data[j];
                 }
-                integer_set_str(res->d, priv_key);
-            } while (integer_is_null(res->d) || integer_cmp(res->d, curve->n) == 0);
-            integer_mod(res->d, res->d, curve->n);
+                integer_set_str(&res->d, priv_key);
+            } while (integer_is_null(&res->d) || integer_cmp(&res->d, &curve->n) == 0);
+            integer_mod(&res->d, &res->d, &curve->n);
 
-            ecc_point_mul(res->p, curve->g, res->d, curve);
-        } while (integer_is_null(res->p->x));
+            ecc_point_mul(res->p, curve->g, &res->d, curve);
+        } while (integer_is_null(&res->p->x));
     }
 
     integer_free(counter);
@@ -122,10 +128,10 @@ void ecc_key_generate_f(struct ecc_key *res, const struct ecc_curve *curve) {
     res->priv = 1;
     {
         while (1) {
-            integer_random(res->d, curve->n);
-            integer_mod(res->d, res->d, curve->n);
-            ecc_point_mul(res->p, curve->g, res->d, curve);
-            if (!integer_is_null(res->p->x) && !integer_is_null(res->d)) break;
+            integer_random(&res->d, &curve->n);
+            integer_mod(&res->d, &res->d, &curve->n);
+            ecc_point_mul(res->p, curve->g, &res->d, curve);
+            if (!integer_is_null(&res->p->x) && !integer_is_null(&res->d)) break;
         }
     }
 }

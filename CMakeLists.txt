@@ -3,24 +3,6 @@ project(Sakaar_CryptoBase C)
 
 set(CMAKE_C_STANDARD 99)
 
-if(NOT TARGET Sakaar_Struct_lib)
-    add_subdirectory(lib/Sakaar-Struct)
-    link_directories(lib/Sakaar-Struct)
-    MESSAGE(STATUS "Connected: Sakaar_Struct_lib")
-endif()
-
-if(NOT TARGET Sakaar_CryptoCode_lib)
-    add_subdirectory(lib/Sakaar-CryptoCode)
-    link_directories(lib/Sakaar-CryptoCode)
-    MESSAGE(STATUS "Connected: Sakaar_CryptoCode_lib")
-endif()
-
-if(NOT TARGET Sakaar_HashCode_lib)
-    add_subdirectory(lib/Sakaar-HashCode)
-    link_directories(lib/Sakaar-HashCode)
-    MESSAGE(STATUS "Connected: Sakaar_HashCode_lib")
-endif()
-
 FILE(GLOB SOURCE_FILES_DIR_DIR "src/*/*/*.c")
 FILE(GLOB SOURCE_FILES_DIR "src/*/*.c")
 FILE(GLOB SOURCE_FILES "src/*.c")
@@ -29,7 +11,7 @@ target_include_directories(${PROJECT_NAME}_lib PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
         PRIVATE src)
-MESSAGE(STATUS "Connected: ${PROJECT_NAME}_lib")
+MESSAGE(STATUS "Created: ${PROJECT_NAME}_lib")
 
 target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_Struct_lib)
 target_link_libraries(${PROJECT_NAME}_lib PUBLIC Sakaar_CryptoCode_lib)

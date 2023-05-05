@@ -6,11 +6,11 @@
 
 struct ecc_curve {
     struct ecc_point *g;
-    struct integer_st *h;
-    struct integer_st *a;
-    struct integer_st *b;
-    struct integer_st *n;
-    struct integer_st *p;
+    struct integer_st h;
+    struct integer_st a;
+    struct integer_st b;
+    struct integer_st n;
+    struct integer_st p;
 };
 
 struct ecc_curve *ecc_curve_new();
