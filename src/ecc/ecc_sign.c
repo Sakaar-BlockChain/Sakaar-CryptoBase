@@ -17,20 +17,20 @@ void ecc_sign_free(struct ecc_sign *res) {
 }
 
 int ecc_sign_set_str(struct ecc_sign *res, const struct string_st *tlv) {
-    if (res == NULL) return 0;
+    if (res == NULL) return ERR_DATA_NULL;
     ecc_sign_clear(res);
     int result = tlv_get_tag(tlv);
     if (result < 0) return result;
     if (result != ECC_SIGN_TLV) return ERR_TLV_TAG;
 
     struct string_st _tlv = {NULL, 0, 0}, _tlv_data  = {NULL, 0, 0};
-    if ((result = tlv_get_value(tlv, &_tlv)) != 0) goto end;
+    if ((result = tlv_get_value(tlv, &_tlv))) goto end;
 
-    if ((result = tlv_get_next_tlv(&_tlv, &_tlv_data)) != 0) goto end;
-    if ((result = integer_set_tlv(&res->r, &_tlv_data)) != 0) goto end;
+    if ((result = tlv_get_next_tlv(&_tlv, &_tlv_data))) goto end;
+    if ((result = integer_set_tlv(&res->r, &_tlv_data))) goto end;
 
-    if ((result = tlv_get_next_tlv(&_tlv, &_tlv_data)) != 0) goto end;
-    if ((result = integer_set_tlv(&res->s, &_tlv_data)) != 0) goto end;
+    if ((result = tlv_get_next_tlv(&_tlv, &_tlv_data))) goto end;
+    if ((result = integer_set_tlv(&res->s, &_tlv_data))) goto end;
     end:
     string_data_free(&_tlv);
     string_data_free(&_tlv_data);
@@ -98,7 +98,8 @@ int ecc_sign_check(const struct ecc_sign *res, const struct ecc_key *key, const 
 
     ecc_point_add(_point1, _point1, _point2, curve);
 
-    int result = (integer_cmp(&_point1->x, &res->r) == 0);
+    int result = ERR_SUCCESS;
+    if (integer_cmp(&_point1->x, &res->r)) result = ERR_DATA_CHECK;
 
     integer_free(hash_int);
     integer_free(s1);

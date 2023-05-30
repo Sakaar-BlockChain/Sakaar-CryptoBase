@@ -22,9 +22,9 @@ void ecc_point_free(struct ecc_point *res) {
 }
 
 int ecc_point_set_str(struct ecc_point *res, const struct string_st *str, const struct ecc_curve *curve) {
-    if (res == NULL) return 0;
+    if (res == NULL) return ERR_DATA_NULL;
     ecc_point_clear(res);
-    if (curve == NULL || str == NULL) return 0;
+    if (curve == NULL || str == NULL) return ERR_DATA_NULL;
     int _tag = tlv_get_tag(str);
     if (_tag < 0) return _tag;
     if ((_tag | 1) != (ECC_POINT_TLV | 1)) return ERR_TLV_TAG;
@@ -50,7 +50,7 @@ int ecc_point_set_str(struct ecc_point *res, const struct string_st *str, const 
     integer_powm(&res->y, &res->y, temp, &curve->p);
     if ((_tag - ECC_POINT_TLV) != integer_get_ui(&res->y) % 2) integer_sub(&res->y, &curve->p, &res->y);
     integer_free(temp);
-    return 0;
+    return ERR_SUCCESS;
 }
 void ecc_point_get_str(const struct ecc_point *P, struct string_st *res) {
     if (res == NULL) return;

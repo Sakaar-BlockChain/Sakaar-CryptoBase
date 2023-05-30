@@ -23,21 +23,21 @@ void ecc_key_free(struct ecc_key *res) {
 }
 
 int ecc_key_set_str(struct ecc_key *res, const struct string_st *str, const struct ecc_curve *curve) {
-    if (res == NULL) return 0;
+    if (res == NULL) return ERR_DATA_NULL;
     ecc_key_clear(res);
-    if (string_is_null(str) || curve == NULL) return 0;
+    if (string_is_null(str) || curve == NULL) return ERR_DATA_NULL;
     unsigned _tag = tlv_get_tag(str);
 
-    int result;
+    int result = ERR_TLV_TAG;
     if (_tag == ECC_KEY_TLV) {
         res->priv = 1;
-        if((result = integer_set_tlv_(&res->d, str)) != 0) return result;
+        if((result = integer_set_tlv_(&res->d, str))) return result;
         ecc_point_mul(res->p, curve->g, &res->d, curve);
     } else if (_tag == ECC_POINT_TLV || _tag == ECC_POINT_TLV + 1) {
         res->priv = 0;
-        if((result = ecc_point_set_str(res->p, str, curve)) != 0) return result;
+        if((result = ecc_point_set_str(res->p, str, curve))) return result;
     }
-    return 0;
+    return result;
 }
 void ecc_key_get_str(const struct ecc_key *res, struct string_st *str) {
     if (str == NULL) return;
