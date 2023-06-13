@@ -92,7 +92,7 @@ void ecc_key_generate(struct ecc_key *res, const struct string_st *str, const st
     }
     {
         integer_get_str(&curve->n, priv_key);
-        size_t pos;
+        size_t pos, size;
 
         do {
             do {
@@ -101,11 +101,12 @@ void ecc_key_generate(struct ecc_key *res, const struct string_st *str, const st
                 string_set(y, master_key);
 
                 pos = 0;
-                for (size_t i = 0; i < priv_key->size; i++) priv_key->data[i] = 0;
-                while (pos < priv_key->size) {
+                size = priv_key->size;
+                for (size_t i = 0; i < size; i++) priv_key->data[i] = 0;
+                while (pos < size) {
                     string_concat(y, temp_str);
                     sha256_code._code(y, y);
-                    for (unsigned j = 0; j < y->size && pos < priv_key->size; j++, pos++)
+                    for (unsigned j = 0; j < y->size && pos < size; j++, pos++)
                         priv_key->data[pos] = y->data[j];
                 }
                 integer_set_str(&res->d, priv_key);
