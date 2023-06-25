@@ -6,14 +6,15 @@
 
 
 struct ecc_key {
-    struct ecc_point *p;
+    struct ecc_point p;
     struct integer_st d;
     int priv;
 };
 
-struct ecc_key *ecc_key_new();
+void ecc_key_data_init(struct ecc_key *);
+void ecc_key_data_free(struct ecc_key *);
+
 void ecc_key_clear(struct ecc_key *);
-void ecc_key_free(struct ecc_key *);
 
 int ecc_key_set_str(struct ecc_key *, const struct string_st *, const struct ecc_curve *);
 void ecc_key_get_str(const struct ecc_key *, struct string_st *);

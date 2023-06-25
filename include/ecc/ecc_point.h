@@ -10,10 +10,11 @@ struct ecc_point {
     struct integer_st y;
 };
 
-struct ecc_point *ecc_point_new();
+void ecc_point_data_init(struct ecc_point *);
+void ecc_point_data_free(struct ecc_point *);
+
 void ecc_point_set(struct ecc_point *, const struct ecc_point *);
 void ecc_point_clear(struct ecc_point *);
-void ecc_point_free(struct ecc_point *);
 
 int ecc_point_set_str(struct ecc_point *, const struct string_st *tlv, const struct ecc_curve *curve);
 void ecc_point_get_str(const struct ecc_point *P, struct string_st *);

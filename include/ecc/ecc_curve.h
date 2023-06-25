@@ -5,7 +5,7 @@
 #include "ecc_point.h"
 
 struct ecc_curve {
-    struct ecc_point *g;
+    struct ecc_point g;
     struct integer_st h;
     struct integer_st a;
     struct integer_st b;
@@ -13,8 +13,8 @@ struct ecc_curve {
     struct integer_st p;
 };
 
-struct ecc_curve *ecc_curve_new();
-void ecc_curve_free(struct ecc_curve *);
+void ecc_curve_data_init(struct ecc_curve *);
+void ecc_curve_data_free(struct ecc_curve *);
 
 void ecc_curve_secp112r1(struct ecc_curve *);
 void ecc_curve_secp112r2(struct ecc_curve *);
