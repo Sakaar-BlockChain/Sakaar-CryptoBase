@@ -29,11 +29,11 @@ int ecc_key_set_str(struct ecc_key *res, const struct string_st *str, const stru
     int result = ERR_TLV_TAG;
     if (_tag == ECC_KEY_TLV) {
         res->priv = 1;
-        if((result = integer_set_tlv_(&res->d, str))) return result;
+        if ((result = integer_set_tlv_(&res->d, str))) return result;
         ecc_point_mul(&res->p, &curve->g, &res->d, curve);
     } else if (_tag == ECC_POINT_TLV || _tag == ECC_POINT_TLV + 1) {
         res->priv = 0;
-        if((result = ecc_point_set_str(&res->p, str, curve))) return result;
+        if ((result = ecc_point_set_str(&res->p, str, curve))) return result;
     }
     return result;
 }
@@ -48,7 +48,7 @@ void ecc_key_get_address(const struct ecc_key *res, struct string_st *tlv) {
     return ecc_point_get_str(&res->p, tlv);
 }
 
-void ecc_key_get_key_self(const struct ecc_key *key, const struct ecc_curve *curve, struct string_st *res){
+void ecc_key_get_key_self(const struct ecc_key *key, const struct ecc_curve *curve, struct string_st *res) {
     if (res == NULL) return;
     if (curve == NULL || key == NULL || !key->priv) return string_clear(res);
     struct ecc_point point;
@@ -60,7 +60,7 @@ void ecc_key_get_key_self(const struct ecc_key *key, const struct ecc_curve *cur
 
     ecc_point_data_free(&point);
 }
-void ecc_key_get_key(const struct ecc_key *key1, const struct ecc_key *key2, const struct ecc_curve *curve, struct string_st *res){
+void ecc_key_get_key(const struct ecc_key *key1, const struct ecc_key *key2, const struct ecc_curve *curve, struct string_st *res) {
     if (res == NULL) return;
     if (curve == NULL || key1 == NULL || key2 == NULL || !key2->priv) return string_clear(res);
     struct ecc_point point;

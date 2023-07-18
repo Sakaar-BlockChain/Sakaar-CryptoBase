@@ -2,8 +2,8 @@
 #include "crypto_base.h"
 
 struct crypto_base get_crypto_base(unsigned code) {
-    if ((code & BASE_ECC) == BASE_ECC){
-        if((code & BASE_SECP) == BASE_SECP){
+    if ((code & BASE_ECC) == BASE_ECC) {
+        if ((code & BASE_SECP) == BASE_SECP) {
             switch (code) {
                 case BASE_SECP112R1:
                     return secp112r1;

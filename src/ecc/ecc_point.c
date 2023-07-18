@@ -22,7 +22,7 @@ void ecc_point_clear(struct ecc_point *res) {
 int ecc_point_set_str(struct ecc_point *res, const struct string_st *str, const struct ecc_curve *curve) {
     if (res == NULL) return ERR_DATA_NULL;
     ecc_point_clear(res);
-    if (curve == NULL || str == NULL) return ERR_DATA_NULL;
+    if (curve == NULL || string_is_null(str)) return ERR_DATA_NULL;
     int _tag = tlv_get_tag(str);
     if (_tag < 0) return _tag;
     if ((_tag | 1) != (ECC_POINT_TLV | 1)) return ERR_TLV_TAG;
@@ -96,8 +96,8 @@ void ecc_point_double(struct ecc_point *res, const struct ecc_point *P, const st
     integer_data_free(&slope);
 }
 void ecc_point_add(struct ecc_point *res, const struct ecc_point *P, const struct ecc_point *Q, const struct ecc_curve *curve) {
-    if (integer_is_null(&P->x) && integer_is_null(&P->y))return ecc_point_set(res, Q);
-    if (integer_is_null(&Q->x) && integer_is_null(&Q->y))return ecc_point_set(res, P);
+    if (integer_is_null(&P->x) && integer_is_null(&P->y)) return ecc_point_set(res, Q);
+    if (integer_is_null(&Q->x) && integer_is_null(&Q->y)) return ecc_point_set(res, P);
     if (integer_cmp(&P->x, &Q->x) == 0) return ecc_point_double(res, P, curve);
 
     struct integer_st slope;

@@ -1,5 +1,5 @@
 #include "memory.h"
 
-int main(){
+int main() {
     printf("Hello World");
 }

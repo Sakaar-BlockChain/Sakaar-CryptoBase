@@ -14,8 +14,8 @@ int secp112r2_encode(const struct string_st *public, const struct string_st *pri
     string_data_init(&hash);
 
     ecc_curve_secp112r2(&curve);
-    if((result = ecc_key_set_str(&public_key, public, &curve))) goto end;
-    if((result = ecc_key_set_str(&private_key, private, &curve))) goto end;
+    if ((result = ecc_key_set_str(&public_key, public, &curve))) goto end;
+    if ((result = ecc_key_set_str(&private_key, private, &curve))) goto end;
 
     ecc_key_get_key(&public_key, &private_key, &curve, &hash);
     get_hash_code(hash_type)._code(&hash, &hash);
@@ -40,8 +40,8 @@ int secp112r2_decode(const struct string_st *public, const struct string_st *pri
     string_data_init(&hash);
 
     ecc_curve_secp112r2(&curve);
-    if((result = ecc_key_set_str(&public_key, public, &curve))) goto end;
-    if((result = ecc_key_set_str(&private_key, private, &curve))) goto end;
+    if ((result = ecc_key_set_str(&public_key, public, &curve))) goto end;
+    if ((result = ecc_key_set_str(&private_key, private, &curve))) goto end;
 
     ecc_key_get_key(&public_key, &private_key, &curve, &hash);
     get_hash_code(hash_type)._code(&hash, &hash);
@@ -64,7 +64,7 @@ int secp112r2_encode_self(const struct string_st *private, const struct string_s
     ecc_key_data_init(&key);
 
     ecc_curve_secp112r2(&curve);
-    if((result = ecc_key_set_str(&key, private, &curve))) goto end;
+    if ((result = ecc_key_set_str(&key, private, &curve))) goto end;
 
     ecc_key_get_key_self(&key, &curve, &hash);
     get_hash_code(hash_type)._code(&hash, &hash);
@@ -86,7 +86,7 @@ int secp112r2_decode_self(const struct string_st *private, const struct string_s
     ecc_key_data_init(&key);
 
     ecc_curve_secp112r2(&curve);
-    if((result = ecc_key_set_str(&key, private, &curve))) goto end;
+    if ((result = ecc_key_set_str(&key, private, &curve))) goto end;
 
     ecc_key_get_key_self(&key, &curve, &hash);
     get_hash_code(hash_type)._code(&hash, &hash);
@@ -108,7 +108,7 @@ int secp112r2_get_public(const struct string_st *private, struct string_st *publ
     ecc_key_data_init(&key);
 
     ecc_curve_secp112r2(&curve);
-    if((result = ecc_key_set_str(&key, private, &curve))) goto end;
+    if ((result = ecc_key_set_str(&key, private, &curve))) goto end;
 
     ecc_key_get_address(&key, public);
     end:
@@ -159,7 +159,7 @@ int secp112r2_create_sign(struct string_st *sign, const struct string_st *privat
     ecc_key_data_init(&key);
 
     ecc_curve_secp112r2(&curve);
-    if((result = ecc_key_set_str(&key, private, &curve))) goto end;
+    if ((result = ecc_key_set_str(&key, private, &curve))) goto end;
     ecc_sign_create(&signature, &key, hash, &curve);
 
     ecc_sign_get_str(&signature, sign);
@@ -180,8 +180,8 @@ int secp112r2_check_sign(const struct string_st *sign, const struct string_st *p
     ecc_key_data_init(&key);
 
     ecc_curve_secp112r2(&curve);
-    if((result = ecc_key_set_str(&key, public, &curve))) goto end;
-    if((result = ecc_sign_set_str(&signature, sign))) goto end;
+    if ((result = ecc_key_set_str(&key, public, &curve))) goto end;
+    if ((result = ecc_sign_set_str(&signature, sign))) goto end;
 
     result = ecc_sign_check(&signature, &key, hash, &curve);
     end:
