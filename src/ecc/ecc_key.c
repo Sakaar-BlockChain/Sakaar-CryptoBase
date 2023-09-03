@@ -27,11 +27,11 @@ int8_t ecc_key_set_str(struct ecc_key *res, const struct string_st *str, const s
     int32_t tag = tlv_get_tag(str);
 
     int8_t result = ERR_TLV_TAG;
-    if (tag == ECC_KEY_TLV) {
+    if (tag == TLV_ECC_KEY) {
         res->priv = 1;
         if ((result = integer_set_tlv_(&res->d, str))) return result;
         ecc_point_mul(&res->p, &curve->g, &res->d, curve);
-    } else if (tag == ECC_POINT_TLV || tag == ECC_POINT_TLV + 1) {
+    } else if (tag == TLV_ECC_POINT || tag == TLV_ECC_POINT + 1) {
         res->priv = 0;
         if ((result = ecc_point_set_str(&res->p, str, curve))) return result;
     }
@@ -41,7 +41,7 @@ void ecc_key_get_str(const struct ecc_key *res, struct string_st *str) {
     if (str == NULL) return;
     if (res == NULL) return string_clear(str);
     if (!res->priv) return ecc_point_get_str(&res->p, str);
-    integer_get_tlv_(&res->d, str, ECC_KEY_TLV);
+    integer_get_tlv_(&res->d, str, TLV_ECC_KEY);
 }
 void ecc_key_get_address(const struct ecc_key *res, struct string_st *tlv) {
     if (res == NULL || tlv == NULL) return;

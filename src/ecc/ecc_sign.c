@@ -19,7 +19,7 @@ int8_t ecc_sign_set_str(struct ecc_sign *res, const struct string_st *tlv) {
     ecc_sign_clear(res);
     int32_t tag = tlv_get_tag(tlv);
     if (tag < 0) return (int8_t) tag;
-    if (tag != ECC_SIGN_TLV) return ERR_TLV_TAG;
+    if (tag != TLV_ECC_SIGN) return ERR_TLV_TAG;
 
     struct string_st _tlv, _tlv_data;
     string_data_init(&_tlv_data);
@@ -48,7 +48,7 @@ void ecc_sign_get_str(const struct ecc_sign *sign, struct string_st *res) {
     integer_get_tlv(&sign->s, &_tlv_data);
     string_concat(res, &_tlv_data);
 
-    tlv_set_string(res, ECC_SIGN_TLV, res);
+    tlv_set_string(res, TLV_ECC_SIGN, res);
     string_data_free(&_tlv_data);
 }
 

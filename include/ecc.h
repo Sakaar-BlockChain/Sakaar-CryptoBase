@@ -9,9 +9,9 @@
 #include "ecc/ecc_key.h"
 
 
-#define ECC_POINT_TLV   0xC2
-#define ECC_SIGN_TLV    0xF4
-#define ECC_KEY_TLV     0xC4
+#define TLV_ECC_POINT   0xC2
+#define TLV_ECC_SIGN    0xF4
+#define TLV_ECC_KEY     0xC4
 
 
 #define ECC_POINT_SIZE  sizeof(struct ecc_point)

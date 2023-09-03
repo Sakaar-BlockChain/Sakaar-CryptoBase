@@ -48,7 +48,7 @@ int8_t ecc_point_set_str(struct ecc_point *res, const struct string_st *str, con
     integer_add(&temp, &curve->p, &temp);
     integer_rs(&temp, &temp, 2);
     integer_powm(&res->y, &res->y, &temp, &curve->p);
-    if ((tag - ECC_POINT_TLV) != integer_get_ui(&res->y) % 2) integer_sub(&res->y, &curve->p, &res->y);
+    if ((tag - TLV_ECC_POINT) != integer_get_ui(&res->y) % 2) integer_sub(&res->y, &curve->p, &res->y);
 
     integer_data_free(&temp);
     return ERR_SUCCESS;
@@ -56,7 +56,7 @@ int8_t ecc_point_set_str(struct ecc_point *res, const struct string_st *str, con
 void ecc_point_get_str(const struct ecc_point *P, struct string_st *res) {
     if (res == NULL) return;
     if (P == NULL) return string_clear(res);
-    integer_get_tlv_(&P->x, res, integer_get_ui(&P->y) % 2 + ECC_POINT_TLV);
+    integer_get_tlv_(&P->x, res, integer_get_ui(&P->y) % 2 + TLV_ECC_POINT);
 }
 
 void ecc_point_double(struct ecc_point *res, const struct ecc_point *P, const struct ecc_curve *curve) {
