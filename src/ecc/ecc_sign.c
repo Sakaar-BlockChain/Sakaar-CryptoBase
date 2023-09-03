@@ -14,16 +14,17 @@ void ecc_sign_clear(struct ecc_sign *res) {
     integer_clear(&res->s);
 }
 
-int ecc_sign_set_str(struct ecc_sign *res, const struct string_st *tlv) {
+int8_t ecc_sign_set_str(struct ecc_sign *res, const struct string_st *tlv) {
     if (res == NULL) return ERR_DATA_NULL;
     ecc_sign_clear(res);
-    int result = tlv_get_tag(tlv);
-    if (result < 0) return result;
-    if (result != ECC_SIGN_TLV) return ERR_TLV_TAG;
+    int32_t tag = tlv_get_tag(tlv);
+    if (tag < 0) return (int8_t) tag;
+    if (tag != ECC_SIGN_TLV) return ERR_TLV_TAG;
 
     struct string_st _tlv, _tlv_data;
     string_data_init(&_tlv_data);
     string_data_init(&_tlv);
+    int8_t result;
     if ((result = tlv_get_value(tlv, &_tlv))) goto end;
 
     if ((result = tlv_get_next_tlv(&_tlv, &_tlv_data))) goto end;
@@ -86,7 +87,7 @@ void ecc_sign_create(struct ecc_sign *res, const struct ecc_key *key, const stru
     integer_data_free(&temp);
     integer_data_free(&hash_int);
 }
-int ecc_sign_check(const struct ecc_sign *res, const struct ecc_key *key, const struct string_st *hash, const struct ecc_curve *curve) {
+int8_t ecc_sign_check(const struct ecc_sign *res, const struct ecc_key *key, const struct string_st *hash, const struct ecc_curve *curve) {
     struct integer_st hash_int;
     struct integer_st s1;
     struct ecc_point _point1;
@@ -109,7 +110,7 @@ int ecc_sign_check(const struct ecc_sign *res, const struct ecc_key *key, const 
 
     ecc_point_add(&_point1, &_point1, &_point2, curve);
 
-    int result = ERR_SUCCESS;
+    int8_t result = ERR_SUCCESS;
     if (integer_cmp(&_point1.x, &res->r)) result = ERR_DATA_CHECK;
 
     ecc_point_data_free(&_point1);

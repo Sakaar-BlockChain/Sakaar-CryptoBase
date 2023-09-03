@@ -32,18 +32,18 @@
 #define BASE_SECP521R1  (0x000b | BASE_SECP_R)
 
 struct crypto_base{
-    int (*_encode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
-    int (*_decode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
-    int (*_encode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
-    int (*_decode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int8_t (*_encode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int8_t (*_decode)(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int8_t (*_encode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
+    int8_t (*_decode_self)(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res);
 
-    int (*_get_public)(const struct string_st *private, struct string_st *public);
+    int8_t (*_get_public)(const struct string_st *private, struct string_st *public);
     void (*_from_string)(struct string_st *private, const struct string_st *str);
     void (*_generate)(struct string_st *private);
 
 
-    int (*_create_sign)(struct string_st *sign, const struct string_st *private, const struct string_st *hash);
-    int (*_check_sign)(const struct string_st *sign, const struct string_st *public, const struct string_st *hash);
+    int8_t (*_create_sign)(struct string_st *sign, const struct string_st *private, const struct string_st *hash);
+    int8_t (*_check_sign)(const struct string_st *sign, const struct string_st *public, const struct string_st *hash);
 };
 
 extern struct crypto_base secp112r1;

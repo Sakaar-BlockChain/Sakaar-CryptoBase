@@ -1,12 +1,12 @@
 #include "crypto_base.h"
 #include "ecc.h"
 
-int secp112r1_encode(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
+int8_t secp112r1_encode(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
     struct ecc_key private_key;
     struct ecc_key public_key;
     struct ecc_curve curve;
     struct string_st hash;
-    int result;
+    int8_t result;
 
     ecc_key_data_init(&private_key);
     ecc_key_data_init(&public_key);
@@ -27,12 +27,12 @@ int secp112r1_encode(const struct string_st *public, const struct string_st *pri
     ecc_key_data_free(&private_key);
     return result;
 }
-int secp112r1_decode(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
+int8_t secp112r1_decode(const struct string_st *public, const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
     struct ecc_key private_key;
     struct ecc_key public_key;
     struct ecc_curve curve;
     struct string_st hash;
-    int result;
+    int8_t result;
 
     ecc_key_data_init(&private_key);
     ecc_key_data_init(&public_key);
@@ -53,11 +53,11 @@ int secp112r1_decode(const struct string_st *public, const struct string_st *pri
     ecc_key_data_free(&private_key);
     return result;
 }
-int secp112r1_encode_self(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
+int8_t secp112r1_encode_self(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
     struct ecc_curve curve;
     struct string_st hash;
     struct ecc_key key;
-    int result;
+    int8_t result;
 
     ecc_curve_data_init(&curve);
     string_data_init(&hash);
@@ -75,11 +75,11 @@ int secp112r1_encode_self(const struct string_st *private, const struct string_s
     ecc_curve_data_free(&curve);
     return result;
 }
-int secp112r1_decode_self(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
+int8_t secp112r1_decode_self(const struct string_st *private, const struct string_st *str, unsigned hash_type, unsigned crypto_type, struct string_st *res) {
     struct ecc_curve curve;
     struct string_st hash;
     struct ecc_key key;
-    int result;
+    int8_t result;
 
     ecc_curve_data_init(&curve);
     string_data_init(&hash);
@@ -99,10 +99,10 @@ int secp112r1_decode_self(const struct string_st *private, const struct string_s
 }
 
 
-int secp112r1_get_public(const struct string_st *private, struct string_st *public) {
+int8_t secp112r1_get_public(const struct string_st *private, struct string_st *public) {
     struct ecc_curve curve;
     struct ecc_key key;
-    int result;
+    int8_t result;
 
     ecc_curve_data_init(&curve);
     ecc_key_data_init(&key);
@@ -148,11 +148,11 @@ void secp112r1_generate(struct string_st *private) {
 }
 
 
-int secp112r1_create_sign(struct string_st *sign, const struct string_st *private, const struct string_st *hash) {
+int8_t secp112r1_create_sign(struct string_st *sign, const struct string_st *private, const struct string_st *hash) {
     struct ecc_sign signature;
     struct ecc_curve curve;
     struct ecc_key key;
-    int result;
+    int8_t result;
 
     ecc_sign_data_init(&signature);
     ecc_curve_data_init(&curve);
@@ -169,11 +169,11 @@ int secp112r1_create_sign(struct string_st *sign, const struct string_st *privat
     ecc_sign_data_free(&signature);
     return result;
 }
-int secp112r1_check_sign(const struct string_st *sign, const struct string_st *public, const struct string_st *hash) {
+int8_t secp112r1_check_sign(const struct string_st *sign, const struct string_st *public, const struct string_st *hash) {
     struct ecc_sign signature;
     struct ecc_curve curve;
     struct ecc_key key;
-    int result;
+    int8_t result;
 
     ecc_sign_data_init(&signature);
     ecc_curve_data_init(&curve);

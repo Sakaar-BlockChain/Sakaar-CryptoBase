@@ -20,18 +20,18 @@ void ecc_key_clear(struct ecc_key *res) {
     res->priv = 0;
 }
 
-int ecc_key_set_str(struct ecc_key *res, const struct string_st *str, const struct ecc_curve *curve) {
+int8_t ecc_key_set_str(struct ecc_key *res, const struct string_st *str, const struct ecc_curve *curve) {
     if (res == NULL) return ERR_DATA_NULL;
     ecc_key_clear(res);
     if (string_is_null(str) || curve == NULL) return ERR_DATA_NULL;
-    unsigned _tag = tlv_get_tag(str);
+    int32_t tag = tlv_get_tag(str);
 
-    int result = ERR_TLV_TAG;
-    if (_tag == ECC_KEY_TLV) {
+    int8_t result = ERR_TLV_TAG;
+    if (tag == ECC_KEY_TLV) {
         res->priv = 1;
         if ((result = integer_set_tlv_(&res->d, str))) return result;
         ecc_point_mul(&res->p, &curve->g, &res->d, curve);
-    } else if (_tag == ECC_POINT_TLV || _tag == ECC_POINT_TLV + 1) {
+    } else if (tag == ECC_POINT_TLV || tag == ECC_POINT_TLV + 1) {
         res->priv = 0;
         if ((result = ecc_point_set_str(&res->p, str, curve))) return result;
     }
